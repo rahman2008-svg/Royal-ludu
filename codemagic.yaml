@@ -1,6 +1,6 @@
 workflows:
   android-build:
-    name: Royal Ludo Android Build
+    name: Royal Ludo APK Build
     max_build_duration: 30
     instance_type: mac_mini_m1
 
@@ -16,17 +16,25 @@ workflows:
           include: true
 
     scripts:
-      - name: Set up local.properties
+      - name: Checkout
+        script: |
+          echo "Starting build..."
+
+      - name: Setup local.properties
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-      - name: Make Gradle executable
+      - name: Grant permission to Gradle
         script: |
           chmod +x ./gradlew
 
+      - name: Clean project
+        script: |
+          ./gradlew clean
+
       - name: Build Debug APK
         script: |
-          ./gradlew clean assembleDebug
+          ./gradlew assembleDebug
 
     artifacts:
       - app/build/outputs/apk/debug/*.apk
