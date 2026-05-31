@@ -20,6 +20,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // ❌ REMOVED debugConfig (fix Codemagic crash)
+
     signingConfigs {
         create("release") {
             val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
@@ -27,14 +29,6 @@ android {
             storePassword = System.getenv("STORE_PASSWORD")
             keyAlias = "upload"
             keyPassword = System.getenv("KEY_PASSWORD")
-        }
-
-        create("debugConfig") {
-            // ✅ FIX: CI-safe debug signing (no dependency on missing file)
-            storeFile = file("${rootDir}/debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
         }
     }
 
@@ -50,9 +44,8 @@ android {
         }
 
         debug {
-            // ✅ FIX: prevents Codemagic crash
             isDebuggable = true
-            signingConfig = signingConfigs.getByName("debugConfig")
+            // ❗ no signingConfig → CI safe
         }
     }
 
