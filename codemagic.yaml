@@ -1,0 +1,34 @@
+# Codemagic CI/CD configuration for Royal Ludo Clone
+workflows:
+  android-build:
+    name: Android APK Build
+    max_build_duration: 30
+    instance_type: mac_mini_m1
+    environment:
+      android_target_sdk: 36
+      groups:
+        - keystore_credentials # For custom production signing if configured
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+    scripts:
+      - name: Set up local.properties and environment
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "GEMINI_API_KEY=dummy-key-not-needed-offline" > .env
+      - name: Build Android Debug APK
+        script: |
+          gradle assembleDebug
+    artifacts:
+      - app/build/outputs/apk/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - princearabdurrahman57@gmail.com
+        notify:
+          success: true
+          failure: true

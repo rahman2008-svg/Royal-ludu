@@ -1,0 +1,6 @@
+{
+  "name": "Royal Ludo",
+  "description": "A beautifully polished, offline-ready Ludo game featuring smooth roll animations, multiplayer local play, custom game themes, statistics tracking, and pre-configured CI/CD assets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
